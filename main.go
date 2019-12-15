@@ -61,15 +61,20 @@ var rootMutation = graphql.NewObject(graphql.ObjectConfig{
 				"text": &graphql.ArgumentConfig{
 					Type: graphql.NewNonNull(graphql.String),
 				},
+				"ids": &graphql.ArgumentConfig{
+					Type: graphql.NewNonNull(graphql.NewList(graphql.NewNonNull(graphql.String))),
+				},
 			},
 			Resolve: func(params graphql.ResolveParams) (interface{}, error) {
 				text, _ := params.Args["text"].(string)
+				ids, _ := params.Args["ids"]
 				newID := RandStringRunes(8)
 				newTodo := Todo{
 					ID:   newID,
 					Text: text,
 					Done: false,
 				}
+				fmt.Println(text, ids)
 				TodoList = append(TodoList, newTodo)
 				return newTodo, nil
 			},
